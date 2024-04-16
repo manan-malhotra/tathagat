@@ -18,11 +18,11 @@ const serviceSidOTP = process.env.SERVICE_SID;
 // });
 
 const server = () => {
-    app.listen(port, () => {
+    app.listen(port, "0.0.0.0", () => {
         console.log(`Server running on port ${port}`);
     });
     console.log(serviceSidOTP);
-    console.log("Testing app running on port 3001");
+    console.log("Testing app running on port 30");
 };
 
 server();
