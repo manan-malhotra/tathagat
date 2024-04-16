@@ -13,6 +13,7 @@ const accountSidOTP = process.env.ACCOUNT_SID_OTP;
 const authTokenOTP = process.env.AUTH_TOKEN_OTP;
 const serviceSidOTP = process.env.SERVICE_SID;
 app.post("/send-otp", async (req, res) => {
+    const client = twilio(accountSidOTP, authTokenOTP);
     const { phoneNumber } = req.body;
     console.log("reached");
     try {
@@ -28,6 +29,7 @@ app.post("/send-otp", async (req, res) => {
 });
 
 app.post("/verify-otp", async (req, res) => {
+    const client = twilio(accountSidOTP, authTokenOTP);
     const { phoneNumber, code } = req.body;
 
     try {
