@@ -60,6 +60,7 @@ const server = () => {
     app.listen(port, () => {
         console.log(`Server running on port ${port}`);
     });
+    console.log("Testing app running on port 3001");
 };
 
 server();
