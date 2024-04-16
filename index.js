@@ -1,4 +1,4 @@
-const port = 3001;
+const port = process.env.PORT || 3000;
 const express = require("express");
 require("dotenv").config();
 const cors = require("cors");
