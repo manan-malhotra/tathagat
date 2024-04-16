@@ -1,20 +1,18 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const dotenv = require("dotenv");
-const cors = require("cors");
-dotenv.config();
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
-
 const port = 3001;
+const express = require("express");
+require("dotenv").config();
+const cors = require("cors");
+const app = express();
+app.use(express.json());
+app.use(cors());
+app.get("/", (req, res) => {
+    res.send("I am alive");
+});
 
 const accountSidOTP = process.env.ACCOUNT_SID_OTP;
 const authTokenOTP = process.env.AUTH_TOKEN_OTP;
 const serviceSidOTP = process.env.SERVICE_SID;
-app.get("/", (req, res) => {
-    res.status(200).json({ message: "Hi" });
-});
+
 // app.listen(port, () => {
 //     console.log(`Server is listening on port ${port}`);
 // });
