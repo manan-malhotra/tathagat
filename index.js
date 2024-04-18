@@ -70,6 +70,7 @@ app.post("/initiate-call", async (req, res) => {
     }
 });
 app.post("/calls/conference-call", (req, res) => {
+    console.log("Request recieved");
     const twimlResponse = new twilio.twiml.VoiceResponse();
     const dial = twimlResponse.dial({ record: true });
     dial.number(
