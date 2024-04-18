@@ -13,6 +13,10 @@ app.get("/", (req, res) => {
 const accountSidOTP = process.env.ACCOUNT_SID_OTP;
 const authTokenOTP = process.env.AUTH_TOKEN_OTP;
 const serviceSidOTP = process.env.SERVICE_SID;
+// Twilio Credentials
+const accountSid = process.env.CALLACCOUNT_SID;
+const authToken = process.env.CALLAUTH_TOKEN;
+
 app.post("/send-otp", async (req, res) => {
     const client = twilio(accountSidOTP, authTokenOTP);
     const { phoneNumber } = req.body;
@@ -49,7 +53,35 @@ app.post("/verify-otp", async (req, res) => {
         res.status(500).json({ error: "Failed to verify OTP" });
     }
 });
-
+app.post("/initiate-call", async (req, res) => {
+    const twilioClient = twilio(accountSid, authToken);
+    const { to } = req.body;
+    try {
+        const call = await twilioClient.calls.create({
+            url: process.env.SERVER + "calls/conference-call", // URL to fetch TwiML instructions
+            to,
+            from: "+12512998076", // Your Twilio phone number
+        });
+        console.log(`Call initiated: ${call.sid}`);
+        res.status(200).json({ message: "Call initiated successfully" });
+    } catch (error) {
+        console.error("Error initiating call:", error);
+        res.status(500).json({ error: "Failed to initiate call" });
+    }
+});
+app.post("/calls/conference-call", (req, res) => {
+    const twimlResponse = new twilio.twiml.VoiceResponse();
+    const dial = twimlResponse.dial({ record: true });
+    dial.number(
+        {
+            statusCallbackEvent: "initiated ringing answered completed",
+            statusCallbackMethod: "POST",
+        },
+        "+918976788430"
+    );
+    res.type("text/xml");
+    res.send(twimlResponse.toString());
+});
 const server = () => {
     app.listen(port, "0.0.0.0", () => {
         console.log(`Server running on port ${port}`);
